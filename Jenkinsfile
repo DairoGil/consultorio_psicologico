@@ -41,7 +41,7 @@ pipeline {
         echo '------------>Análisis de código estático<------------'
         sonarqubeMasQualityGatesP(
             sonarKey:'co.com.ceiba:adn:consultoriopsicologico.dairo.gil',
-            sonarName:'''"Ceiba-ConsultorioPsicologico(dairo.gil)"''',
+            sonarName:'''"CeibaADN-ConsultorioPsicologico(dairo.gil)"''',
             sonarPathProperties:'./sonar-project.properties'
         )
       }
