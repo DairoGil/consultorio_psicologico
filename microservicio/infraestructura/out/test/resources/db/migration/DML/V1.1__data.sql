@@ -1,0 +1,2 @@
+INSERT INTO paciente(id, nombre, fecha, telefono, tipo_cliente) values(1,'Cliente 1', TO_DATE('03/05/1995', 'mm/dd/yyyy'), "3134587521", 'VALORACION');
+INSERT INTO paciente(id, nombre, fecha, tipo_cliente) values(2,'Cliente 2', TO_DATE('03/05/1995', 'mm/dd/yyyy'), 'VALORACION');
