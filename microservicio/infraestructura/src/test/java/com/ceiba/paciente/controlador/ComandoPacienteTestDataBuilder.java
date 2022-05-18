@@ -11,6 +11,7 @@ public class ComandoPacienteTestDataBuilder {
     private String nombre;
     private LocalDate fechaNacimiento;
     private String telefono;
+    private Integer sesionesAsesoria;
     private TipoPaciente tipoPaciente;
 
     public ComandoPacienteTestDataBuilder crearPorDefecto() {
@@ -22,6 +23,6 @@ public class ComandoPacienteTestDataBuilder {
     }
 
     public ComandoPaciente build(){
-        return new ComandoPaciente(this.id, this.nombre, this.fechaNacimiento, this.telefono, this.tipoPaciente);
+        return new ComandoPaciente(this.id, this.nombre, this.fechaNacimiento, this.telefono, this.sesionesAsesoria, this.tipoPaciente);
     }
 }

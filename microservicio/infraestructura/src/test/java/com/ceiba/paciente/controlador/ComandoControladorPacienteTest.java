@@ -2,8 +2,10 @@ package com.ceiba.paciente.controlador;
 
 import com.ceiba.ApplicationMock;
 import com.ceiba.paciente.comando.ComandoPaciente;
+import com.ceiba.paciente.entidad.Paciente;
 import com.ceiba.paciente.puerto.RepositorioPaciente;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +44,17 @@ class ComandoControladorPacienteTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(comandoPaciente)))
                 .andExpect(status().isCreated());
+    }
+
+    @Test
+    void asesorarPacienteExitoso() throws Exception {
+
+        mockMvc.perform(post("/paciente/asesorar/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        Paciente paciente = repositorioPaciente.obtener(1l);
+
+        Assertions.assertTrue(paciente.esTipoAsesoria());
     }
 }

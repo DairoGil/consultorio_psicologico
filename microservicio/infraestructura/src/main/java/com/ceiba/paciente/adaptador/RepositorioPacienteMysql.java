@@ -1,6 +1,7 @@
 package com.ceiba.paciente.adaptador;
 
 import com.ceiba.infraestructura.jdbc.CustomNamedParameterJdbcTemplate;
+import com.ceiba.infraestructura.jdbc.EjecucionBaseDeDatos;
 import com.ceiba.infraestructura.jdbc.sqlstatement.SqlStatement;
 import com.ceiba.paciente.entidad.Paciente;
 import com.ceiba.paciente.puerto.RepositorioPaciente;
@@ -12,11 +13,20 @@ public class RepositorioPacienteMysql implements RepositorioPaciente {
 
     private final CustomNamedParameterJdbcTemplate customNamedParameterJdbcTemplate;
 
+    private final MapeoPaciente mapeoPaciente;
+
     @SqlStatement(namespace = "paciente", value = "crear")
     private static String sqlCrear;
 
-    public RepositorioPacienteMysql(CustomNamedParameterJdbcTemplate customNamedParameterJdbcTemplate) {
+    @SqlStatement(namespace = "paciente", value = "obtenerporid")
+    private static String sqlObtenerPorId;
+
+    @SqlStatement(namespace = "paciente", value = "actualizartipo")
+    private static String sqlActualizarTipo;
+
+    public RepositorioPacienteMysql(CustomNamedParameterJdbcTemplate customNamedParameterJdbcTemplate, MapeoPaciente mapeoPaciente) {
         this.customNamedParameterJdbcTemplate = customNamedParameterJdbcTemplate;
+        this.mapeoPaciente = mapeoPaciente;
     }
 
     @Override
@@ -26,22 +36,34 @@ public class RepositorioPacienteMysql implements RepositorioPaciente {
         paramSource.addValue("nombre", paciente.getNombre());
         paramSource.addValue("fechaNacimiento", paciente.getFechaNacimiento());
         paramSource.addValue("telefono", paciente.getTelefono());
+        paramSource.addValue("sesionesAsesoria", paciente.getSesionesAsesoria());
         paramSource.addValue("tipoPaciente", paciente.getTipoPaciente().toString());
         return this.customNamedParameterJdbcTemplate.crear(paramSource,sqlCrear);
     }
 
     @Override
     public Paciente obtener(Long id) {
-        return null;
+        MapSqlParameterSource paramSource = new MapSqlParameterSource();
+        paramSource.addValue("idPaciente", id);
+        return EjecucionBaseDeDatos.obtenerUnObjetoONull(()-> this.customNamedParameterJdbcTemplate
+                .getNamedParameterJdbcTemplate()
+                .queryForObject(sqlObtenerPorId,paramSource, mapeoPaciente));
     }
 
     @Override
-    public void actualizar(Paciente paciente) {
-
+    public void actualizarTipo(Paciente paciente) {
+        MapSqlParameterSource paramSource = new MapSqlParameterSource();
+        paramSource.addValue("id", paciente.getId());
+        paramSource.addValue("tipoPaciente", paciente.getTipoPaciente().toString());
+        this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().update(sqlActualizarTipo, paramSource);
     }
 
     @Override
-    public void eliminar(Long id) {
-
+    public void actualizarAsesoria(Paciente paciente) {
+        MapSqlParameterSource paramSource = new MapSqlParameterSource();
+        paramSource.addValue("id", paciente.getId());
+        paramSource.addValue("tipoPaciente", paciente.getTipoPaciente().toString());
+        paramSource.addValue("sesionesAsesoria", paciente.getSesionesAsesoria());
+        this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().update(sqlActualizarTipo, paramSource);
     }
 }

@@ -11,6 +11,8 @@ public class PacienteTestDataBuilder {
     private String nombre;
     private LocalDate fechaNacimiento;
     private String telefono;
+
+    private Integer sesionesAsesoria;
     private TipoPaciente tipoPaciente;
 
     public PacienteTestDataBuilder conPacientePorDefecto(){
@@ -18,6 +20,7 @@ public class PacienteTestDataBuilder {
         this.nombre = "Paciente 1";
         this.fechaNacimiento = LocalDate.of(1996,7,23);
         this.telefono = "3120144527";
+        this.sesionesAsesoria = 0;
         this.tipoPaciente = TipoPaciente.VALORACION;
 
         return this;
@@ -43,19 +46,28 @@ public class PacienteTestDataBuilder {
         return this;
     }
 
+    public PacienteTestDataBuilder conSesionesAsesoria(Integer sesionesAsesoria) {
+        this.sesionesAsesoria = sesionesAsesoria;
+        return this;
+    }
+
     public PacienteTestDataBuilder conTipoPaciente(TipoPaciente tipoPaciente) {
         this.tipoPaciente = tipoPaciente;
         return this;
     }
 
     public Paciente build() {
-        Paciente paciente = new Paciente(id, nombre, fechaNacimiento,telefono, tipoPaciente);
+        Paciente paciente = new Paciente(id, nombre, fechaNacimiento,telefono, sesionesAsesoria, tipoPaciente);
         return paciente;
     }
 
     public Paciente crear() {
-        Paciente paciente = new Paciente(id, nombre, fechaNacimiento,telefono, tipoPaciente);
+        Paciente paciente = new Paciente(id, nombre, fechaNacimiento,telefono, sesionesAsesoria, tipoPaciente);
         paciente.crear();
         return paciente;
+    }
+
+    public Paciente reconstruir(){
+        return Paciente.reconstruir(id, nombre, fechaNacimiento,telefono, sesionesAsesoria, tipoPaciente);
     }
 }

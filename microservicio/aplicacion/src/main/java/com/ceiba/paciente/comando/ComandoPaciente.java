@@ -14,9 +14,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class ComandoPaciente {
 
-    private Long id;
+    private Long idPaciente;
     private String nombre;
     private LocalDate fechaNacimiento;
     private String telefono;
+    private Integer sesionesAsesoria;
     private TipoPaciente tipoPaciente;
 }

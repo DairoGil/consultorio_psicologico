@@ -14,9 +14,11 @@ public class Paciente {
     private final String nombre;
     private final LocalDate fechaNacimiento;
     private String telefono;
+
+    private Integer sesionesAsesoria;
     private TipoPaciente tipoPaciente;
 
-    public Paciente(Long id, String nombre, LocalDate fechaNacimiento, String telefono, TipoPaciente tipoPaciente) {
+    public Paciente(Long id, String nombre, LocalDate fechaNacimiento, String telefono, Integer sesionesAsesoria, TipoPaciente tipoPaciente) {
         validarObligatorio(id, "Se requiere la identificación del paciente");
         validarObligatorio(nombre, "Se requiere el nombre del paciente");
         validarObligatorio(fechaNacimiento, "Se requiere la fecha de nacimiento del paciente");
@@ -25,6 +27,7 @@ public class Paciente {
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;
         this.telefono = telefono;
+        this.sesionesAsesoria = sesionesAsesoria;
         this.tipoPaciente = tipoPaciente;
     }
 
@@ -42,12 +45,19 @@ public class Paciente {
 
     public void crear(){
         this.tipoPaciente = TipoPaciente.VALORACION;
+        this.sesionesAsesoria = 0;
     }
 
-    public void actualizarTipo(TipoPaciente nuevoTipo){
-        if(!esTipoValoracion() && !nuevoTipo.equals(TipoPaciente.VALORACION)){
+    public static Paciente reconstruir(Long id, String nombre, LocalDate fechaNacimiento, String telefono, Integer citasAsesoria, TipoPaciente tipoPaciente){
+        validarObligatorio(tipoPaciente, "Se requiere el tipo de paciente");
+        return new Paciente(id, nombre, fechaNacimiento, telefono, citasAsesoria, tipoPaciente);
+    }
+
+    public void asesorar() {
+        if(!esTipoValoracion() || this.sesionesAsesoria != 0){
             throw new ExcepcionValorInvalido("El paciente ya tiene activa una asesoria o terapia");
         }
-        this.tipoPaciente = nuevoTipo;
+        this.sesionesAsesoria = 3;
+        this.tipoPaciente = TipoPaciente.ASESORIA;
     }
 }

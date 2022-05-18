@@ -8,10 +8,11 @@ import org.springframework.stereotype.Component;
 public class FabricaPaciente {
 
     public Paciente crear(ComandoPaciente comandoPaciente){
-        return new Paciente(comandoPaciente.getId(),
+        return new Paciente(comandoPaciente.getIdPaciente(),
                 comandoPaciente.getNombre(),
                 comandoPaciente.getFechaNacimiento(),
                 comandoPaciente.getTelefono(),
+                comandoPaciente.getSesionesAsesoria(),
                 comandoPaciente.getTipoPaciente()
         );
     }

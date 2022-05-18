@@ -6,6 +6,6 @@ public interface RepositorioPaciente {
 
     Long guardar(Paciente paciente);
     Paciente obtener(Long id);
-    void actualizar(Paciente paciente);
-    void eliminar(Long id);
+    void actualizarTipo(Paciente paciente);
+    void actualizarAsesoria(Paciente paciente);
 }
