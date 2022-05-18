@@ -7,5 +7,5 @@ public interface RepositorioPaciente {
     Long guardar(Paciente paciente);
     Paciente obtener(Long id);
     void actualizarTipo(Paciente paciente);
-    void actualizarAsesoria(Paciente paciente);
+    void actualizarPorAsesoria(Paciente paciente);
 }

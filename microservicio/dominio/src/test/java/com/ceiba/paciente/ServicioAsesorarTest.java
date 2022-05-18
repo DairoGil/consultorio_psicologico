@@ -1,7 +1,6 @@
 package com.ceiba.paciente;
 
 import com.ceiba.BasePrueba;
-import com.ceiba.dominio.excepcion.ExcepcionSinDatos;
 import com.ceiba.dominio.excepcion.ExcepcionValorInvalido;
 import com.ceiba.dominio.excepcion.ExcepcionValorObligatorio;
 import com.ceiba.paciente.entidad.Paciente;
@@ -26,7 +25,7 @@ public class ServicioAsesorarTest {
         servicioAsesorar.ejecutar(paciente);
 
         Mockito.verify(repositorioPaciente, Mockito.times(1))
-                .actualizarAsesoria(paciente);
+                .actualizarPorAsesoria(paciente);
         Assertions.assertEquals(TipoPaciente.ASESORIA, paciente.getTipoPaciente());
     }
 
