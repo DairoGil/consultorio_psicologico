@@ -14,6 +14,7 @@ public class RepositorioPacienteMysql implements RepositorioPaciente {
     private final CustomNamedParameterJdbcTemplate customNamedParameterJdbcTemplate;
 
     private final MapeoPaciente mapeoPaciente;
+    private static final String TIPO_PACIENTE_PARAM_NAME = "tipoPaciente";
 
     @SqlStatement(namespace = "paciente", value = "crear")
     private static String sqlCrear;
@@ -37,7 +38,7 @@ public class RepositorioPacienteMysql implements RepositorioPaciente {
         paramSource.addValue("fechaNacimiento", paciente.getFechaNacimiento());
         paramSource.addValue("telefono", paciente.getTelefono());
         paramSource.addValue("sesionesAsesoria", paciente.getSesionesAsesoria());
-        paramSource.addValue("tipoPaciente", paciente.getTipoPaciente().toString());
+        paramSource.addValue(TIPO_PACIENTE_PARAM_NAME, paciente.getTipoPaciente().toString());
         return this.customNamedParameterJdbcTemplate.crear(paramSource,sqlCrear);
     }
 
@@ -54,7 +55,7 @@ public class RepositorioPacienteMysql implements RepositorioPaciente {
     public void actualizarTipo(Paciente paciente) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
         paramSource.addValue("id", paciente.getId());
-        paramSource.addValue("tipoPaciente", paciente.getTipoPaciente().toString());
+        paramSource.addValue(TIPO_PACIENTE_PARAM_NAME, paciente.getTipoPaciente().toString());
         this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().update(sqlActualizarTipo, paramSource);
     }
 
@@ -62,7 +63,7 @@ public class RepositorioPacienteMysql implements RepositorioPaciente {
     public void actualizarAsesoria(Paciente paciente) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
         paramSource.addValue("id", paciente.getId());
-        paramSource.addValue("tipoPaciente", paciente.getTipoPaciente().toString());
+        paramSource.addValue(TIPO_PACIENTE_PARAM_NAME, paciente.getTipoPaciente().toString());
         paramSource.addValue("sesionesAsesoria", paciente.getSesionesAsesoria());
         this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().update(sqlActualizarTipo, paramSource);
     }
