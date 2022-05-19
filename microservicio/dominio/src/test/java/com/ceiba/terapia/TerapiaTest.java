@@ -24,6 +24,19 @@ class TerapiaTest {
     }
 
     @Test
+    void reconstruirTerapiaExitoso () {
+        Terapia terapia = new TerapiaTestDataBuilder()
+                .conTerapiaPorDefecto()
+                .reconstruir();
+
+        Assertions.assertEquals(2l, terapia.getId());
+        Assertions.assertEquals(1l, terapia.getPaciente().getId());
+        Assertions.assertEquals("Razones por las que el paciente ha acudido a la consulta.", terapia.getResumen());
+        Assertions.assertEquals(3, terapia.getPeriodicidadMes());
+        Assertions.assertEquals(EstadoTerapia.ACTIVA, terapia.getEstado());
+    }
+
+    @Test
     void terapiaSinPacienteDeberiaLanzarError() {
         BasePrueba.assertThrows(() -> new TerapiaTestDataBuilder().build(),
                 ExcepcionValorObligatorio.class,
@@ -47,6 +60,29 @@ class TerapiaTest {
                         .build(),
                 ExcepcionValorObligatorio.class,
                 "Se requiere el periodo por mes de la terapia");
+    }
+
+    @Test
+    void reconstruirSinIdDeberiaLanzarError() {
+        BasePrueba.assertThrows(() -> new TerapiaTestDataBuilder()
+                        .conPaciente(new PacienteTestDataBuilder().conPacientePorDefecto().build())
+                        .conResumen("Razones por las que el paciente ha acudido a la consulta.")
+                        .conPeriodicidadMes(3)
+                        .reconstruir(),
+                ExcepcionValorObligatorio.class,
+                "Se requiere el id de la terapia");
+    }
+
+    @Test
+    void reconstruirSinEstadoDeberiaLanzarError() {
+        BasePrueba.assertThrows(() -> new TerapiaTestDataBuilder()
+                        .conId(3l)
+                        .conPaciente(new PacienteTestDataBuilder().conPacientePorDefecto().build())
+                        .conResumen("Razones por las que el paciente ha acudido a la consulta.")
+                        .conPeriodicidadMes(3)
+                        .reconstruir(),
+                ExcepcionValorObligatorio.class,
+                "Se requiere conocer el estado de la terapia");
     }
 
     @Test

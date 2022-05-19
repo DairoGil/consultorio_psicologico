@@ -56,4 +56,8 @@ public class TerapiaTestDataBuilder {
         terapia.iniciar();
         return terapia;
     }
+
+    public Terapia reconstruir() {
+        return Terapia.reconstruir(id, paciente, resumen, periodicidadMes, estadoTerapia);
+    }
 }
