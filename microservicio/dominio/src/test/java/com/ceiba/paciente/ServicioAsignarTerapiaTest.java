@@ -7,30 +7,31 @@ import com.ceiba.paciente.entidad.Paciente;
 import com.ceiba.paciente.entidad.TipoPaciente;
 import com.ceiba.paciente.puerto.RepositorioPaciente;
 import com.ceiba.paciente.servicio.ServicioAsesorar;
+import com.ceiba.paciente.servicio.ServicioAsignarTerapia;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-class ServicioAsesorarTest {
+class ServicioAsignarTerapiaTest {
 
     @Test
-    void deberiaAsesorarPacienteTipoValoracionSinSesionesAsesoria() {
+    void deberiaAsignarTerapiaPacienteTipoValoracion() {
         Paciente paciente = new PacienteTestDataBuilder()
                 .conPacientePorDefecto()
                 .build();
         RepositorioPaciente repositorioPaciente =
                 Mockito.mock(RepositorioPaciente.class);
 
-        ServicioAsesorar servicioAsesorar = new ServicioAsesorar(repositorioPaciente);
-        servicioAsesorar.ejecutar(paciente);
+        ServicioAsignarTerapia servicioAsignarTerapia = new ServicioAsignarTerapia(repositorioPaciente);
+        servicioAsignarTerapia.ejecutar(paciente);
 
         Mockito.verify(repositorioPaciente, Mockito.times(1))
-                .actualizarPorAsesoria(paciente);
-        Assertions.assertEquals(TipoPaciente.ASESORIA, paciente.getTipoPaciente());
+                .actualizarTipo(paciente);
+        Assertions.assertEquals(TipoPaciente.TERAPIA, paciente.getTipoPaciente());
     }
 
     @Test
-    void asesorarPacienteNoExisteDeberiaLanzarError() {
+    void asignarTerapiaPacienteNoExisteDeberiaLanzarError() {
         RepositorioPaciente repositorioPaciente =
                 Mockito.mock(RepositorioPaciente.class);
 
@@ -45,24 +46,7 @@ class ServicioAsesorarTest {
     void asesorarPacienteNoEstaEnValoracionDeberiaLanzarError() {
         Paciente paciente = new PacienteTestDataBuilder()
                 .conPacientePorDefecto()
-                .conTipoPaciente(TipoPaciente.TERAPIA)
-                .build();
-
-        RepositorioPaciente repositorioPaciente =
-                Mockito.mock(RepositorioPaciente.class);
-
-        ServicioAsesorar servicioAsesorar = new ServicioAsesorar(repositorioPaciente);
-
-        BasePrueba.assertThrows(()-> servicioAsesorar.ejecutar(paciente),
-                ExcepcionValorInvalido.class,
-                "El paciente ya tiene activa una asesoria o terapia");
-    }
-
-    @Test
-    void asesorarPacienteConSesionesAsesoriaDeberiaLanzarError() {
-        Paciente paciente = new PacienteTestDataBuilder()
-                .conPacientePorDefecto()
-                .conSesionesAsesoria(1)
+                .conTipoPaciente(TipoPaciente.ASESORIA)
                 .build();
 
         RepositorioPaciente repositorioPaciente =

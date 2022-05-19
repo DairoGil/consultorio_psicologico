@@ -3,7 +3,6 @@ package com.ceiba.paciente.adaptador;
 import com.ceiba.infraestructura.jdbc.MapperResult;
 import com.ceiba.paciente.entidad.Paciente;
 import com.ceiba.paciente.entidad.TipoPaciente;
-import com.ceiba.paciente.puerto.RepositorioPaciente;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 

@@ -60,4 +60,11 @@ public class Paciente {
         this.sesionesAsesoria = 3;
         this.tipoPaciente = TipoPaciente.ASESORIA;
     }
+
+    public void asignarTerapia(){
+        if(!esTipoValoracion() || this.sesionesAsesoria != 0){
+            throw new ExcepcionValorInvalido("El paciente ya tiene activa una asesoria o terapia");
+        }
+        this.tipoPaciente = TipoPaciente.TERAPIA;
+    }
 }

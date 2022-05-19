@@ -137,13 +137,46 @@ class PacienteTest {
     }
 
     @Test
-    void asesorarPacienteTieneCitasValoracionDeberiaLanzarError(){
+    void asesorarPacienteTieneSesionesAsesoriaDeberiaLanzarError(){
         Paciente paciente = new PacienteTestDataBuilder()
                 .conPacientePorDefecto()
                 .conSesionesAsesoria(1)
                 .build();
 
         BasePrueba.assertThrows(()->paciente.asesorar(),
+                ExcepcionValorInvalido.class,
+                "El paciente ya tiene activa una asesoria o terapia");
+    }
+
+    @Test
+    void asignarTerapiaAPacienteValoracionDeberiaQuedarActualizado(){
+        Paciente paciente = new PacienteTestDataBuilder()
+                .conPacientePorDefecto()
+                .build();
+        paciente.asignarTerapia();
+        Assertions.assertEquals(TipoPaciente.TERAPIA, paciente.getTipoPaciente());
+    }
+
+    @Test
+    void asignarTerapiaPacienteNoEstaValoracionDeberiaLanzarError(){
+        Paciente paciente = new PacienteTestDataBuilder()
+                .conPacientePorDefecto()
+                .conTipoPaciente(TipoPaciente.ASESORIA)
+                .build();
+
+        BasePrueba.assertThrows(()->paciente.asesorar(),
+                ExcepcionValorInvalido.class,
+                "El paciente ya tiene activa una asesoria o terapia");
+    }
+
+    @Test
+    void asignarTerapiaPacienteTieneSesionesAsesoriaDeberiaLanzarError(){
+        Paciente paciente = new PacienteTestDataBuilder()
+                .conPacientePorDefecto()
+                .conSesionesAsesoria(1)
+                .build();
+
+        BasePrueba.assertThrows(()->paciente.asignarTerapia(),
                 ExcepcionValorInvalido.class,
                 "El paciente ya tiene activa una asesoria o terapia");
     }

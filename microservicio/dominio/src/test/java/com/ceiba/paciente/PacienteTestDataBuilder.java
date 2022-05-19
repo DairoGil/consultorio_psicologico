@@ -57,8 +57,7 @@ public class PacienteTestDataBuilder {
     }
 
     public Paciente build() {
-        Paciente paciente = new Paciente(id, nombre, fechaNacimiento,telefono, sesionesAsesoria, tipoPaciente);
-        return paciente;
+        return new Paciente(id, nombre, fechaNacimiento,telefono, sesionesAsesoria, tipoPaciente);
     }
 
     public Paciente crear() {

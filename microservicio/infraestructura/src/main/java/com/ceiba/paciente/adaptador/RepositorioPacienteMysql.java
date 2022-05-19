@@ -22,6 +22,9 @@ public class RepositorioPacienteMysql implements RepositorioPaciente {
     @SqlStatement(namespace = "paciente", value = "obtenerporid")
     private static String sqlObtenerPorId;
 
+    @SqlStatement(namespace = "paciente", value = "actualizartipo")
+    private static String sqlActualizartipo;
+
     @SqlStatement(namespace = "paciente", value = "actualizarporasesoria")
     private static String sqlActualizarPorAsesoria;
 
@@ -56,7 +59,7 @@ public class RepositorioPacienteMysql implements RepositorioPaciente {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
         paramSource.addValue("id", paciente.getId());
         paramSource.addValue(TIPO_PACIENTE_PARAM_NAME, paciente.getTipoPaciente().toString());
-        this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().update(sqlActualizarPorAsesoria, paramSource);
+        this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().update(sqlActualizartipo, paramSource);
     }
 
     @Override
