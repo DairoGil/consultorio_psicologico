@@ -9,8 +9,6 @@ import com.ceiba.terapia.puerto.RepositorioTerapia;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public class RepositorioTerapiaMysql implements RepositorioTerapia {
 
@@ -52,16 +50,12 @@ public class RepositorioTerapiaMysql implements RepositorioTerapia {
     }
 
     @Override
-    public void actualizarEstado(Terapia terapia) {
-
-    }
-
-    @Override
-    public List<Terapia> obtenerPorIdPaciente(Long idPaciente) {
+    public Terapia obtenerActivaPorIdPaciente(Long idPaciente) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
         paramSource.addValue("id_paciente", idPaciente);
         paramSource.addValue("estado", EstadoTerapia.ACTIVA.toString());
-        return this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate()
-                .query(sqlObtenerActivasPorIdPaciente, paramSource, mapeoTerapia);
+        return EjecucionBaseDeDatos.obtenerUnObjetoONull(() ->
+                this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate()
+                .queryForObject(sqlObtenerActivasPorIdPaciente, paramSource, mapeoTerapia));
     }
 }

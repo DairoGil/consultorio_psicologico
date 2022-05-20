@@ -22,7 +22,7 @@ public class ServicioIniciar {
     }
 
     private void validarTerapiasActivas(Long idPaciente){
-        if(!repositorioTerapia.obtenerPorIdPaciente(idPaciente).isEmpty()){
+        if(repositorioTerapia.obtenerActivaPorIdPaciente(idPaciente) != null){
             throw new ExcepcionDuplicidad("El paciente ya tiene una terapia activa");
         }
     }

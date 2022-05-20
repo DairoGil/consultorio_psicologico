@@ -2,8 +2,6 @@ package com.ceiba.terapia;
 
 import com.ceiba.BasePrueba;
 import com.ceiba.dominio.excepcion.ExcepcionDuplicidad;
-import com.ceiba.paciente.PacienteTestDataBuilder;
-import com.ceiba.paciente.entidad.TipoPaciente;
 import com.ceiba.paciente.puerto.RepositorioPaciente;
 import com.ceiba.paciente.servicio.ServicioAsignarTerapia;
 import com.ceiba.terapia.entidad.Terapia;
@@ -13,9 +11,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.ArrayList;
-import java.util.List;
-
 class ServicioIniciarTest {
 
     @Test
@@ -24,12 +19,10 @@ class ServicioIniciarTest {
                 .conTerapiaPorDefecto()
                 .iniciar();
 
-        List<Terapia> terapiasActivas = new ArrayList<>();
-
         RepositorioTerapia repositorioTerapia =
                 Mockito.mock(RepositorioTerapia.class);
         Mockito.when(repositorioTerapia.guardar(Mockito.any())).thenReturn(terapia.getId());
-        Mockito.when(repositorioTerapia.obtenerPorIdPaciente(Mockito.any())).thenReturn(terapiasActivas);
+        Mockito.when(repositorioTerapia.obtenerActivaPorIdPaciente(Mockito.any())).thenReturn(null);
 
         RepositorioPaciente repositorioPaciente =
                 Mockito.mock(RepositorioPaciente.class);
@@ -52,12 +45,9 @@ class ServicioIniciarTest {
                 .conTerapiaPorDefecto()
                 .iniciar();
 
-        List<Terapia> terapiasActivas = new ArrayList<>();
-        terapiasActivas.add(terapia);
-
         RepositorioTerapia repositorioTerapia =
                 Mockito.mock(RepositorioTerapia.class);
-        Mockito.when(repositorioTerapia.obtenerPorIdPaciente(Mockito.any())).thenReturn(terapiasActivas);
+        Mockito.when(repositorioTerapia.obtenerActivaPorIdPaciente(Mockito.any())).thenReturn(terapia);
 
         RepositorioPaciente repositorioPaciente =
                 Mockito.mock(RepositorioPaciente.class);

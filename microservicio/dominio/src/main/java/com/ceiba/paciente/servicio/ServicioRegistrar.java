@@ -13,7 +13,7 @@ public class ServicioRegistrar {
     }
 
     public Long ejecutar(Paciente paciente){
-        ValidadorArgumento.validarObligatorio(paciente, "No existe paciente para registrar");
+        ValidadorArgumento.validarObligatorio(paciente, "Se requiere paciente para registrar");
         validarDuplicidad(paciente);
         paciente.crear();
         return repositorioPaciente.guardar(paciente);
