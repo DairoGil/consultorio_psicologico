@@ -32,7 +32,7 @@ class ServicioAgendarTest {
         Mockito.when(repositorioSesion.guardar(Mockito.any())).thenReturn(2l);
 
         DaoSesion daoSesion = Mockito.mock(DaoSesion.class);
-        Mockito.when(daoSesion.obtenerPendientesPorIdPaciente(Mockito.any())).thenReturn(sesionesPendientes);
+        Mockito.when(daoSesion.listarPendientesPorIdPaciente(Mockito.any())).thenReturn(sesionesPendientes);
 
         RepositorioTerapia repositorioTerapia =
                 Mockito.mock(RepositorioTerapia.class);
@@ -68,7 +68,7 @@ class ServicioAgendarTest {
         Mockito.when(repositorioSesion.guardar(Mockito.any())).thenReturn(2l);
 
         DaoSesion daoSesion = Mockito.mock(DaoSesion.class);
-        Mockito.when(daoSesion.obtenerPendientesPorIdPaciente(Mockito.any())).thenReturn(sesionesPendientes);
+        Mockito.when(daoSesion.listarPendientesPorIdPaciente(Mockito.any())).thenReturn(sesionesPendientes);
 
         RepositorioTerapia repositorioTerapia =
                 Mockito.mock(RepositorioTerapia.class);
@@ -94,7 +94,7 @@ class ServicioAgendarTest {
         Mockito.when(repositorioSesion.guardar(Mockito.any())).thenReturn(2l);
 
         DaoSesion daoSesion = Mockito.mock(DaoSesion.class);
-        Mockito.when(daoSesion.obtenerPendientesPorIdPaciente(Mockito.any())).thenReturn(sesionesPendientes);
+        Mockito.when(daoSesion.listarPendientesPorIdPaciente(Mockito.any())).thenReturn(sesionesPendientes);
 
         RepositorioTerapia repositorioTerapia =
                 Mockito.mock(RepositorioTerapia.class);

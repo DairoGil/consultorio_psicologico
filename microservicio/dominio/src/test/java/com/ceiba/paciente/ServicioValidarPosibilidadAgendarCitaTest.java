@@ -33,7 +33,7 @@ class ServicioValidarPosibilidadAgendarCitaTest {
     @Test
     void esPosibleAgendarCita(){
         DaoSesion daoSesion = Mockito.mock(DaoSesion.class);
-        Mockito.when(daoSesion.obtenerPendientesPorIdPaciente(Mockito.any())).thenReturn(sesionesPendientes);
+        Mockito.when(daoSesion.listarPendientesPorIdPaciente(Mockito.any())).thenReturn(sesionesPendientes);
 
         ServicioValidarPosibilidadAgendarCita servicioValidarPosibilidadAgendarCita
                 = new ServicioValidarPosibilidadAgendarCita(daoSesion);
@@ -41,7 +41,7 @@ class ServicioValidarPosibilidadAgendarCitaTest {
         servicioValidarPosibilidadAgendarCita.ejecutar(paciente);
 
         Mockito.verify(daoSesion, Mockito.times(1))
-                .obtenerPendientesPorIdPaciente(paciente.getId());
+                .listarPendientesPorIdPaciente(paciente.getId());
     }
 
     @Test
@@ -65,7 +65,7 @@ class ServicioValidarPosibilidadAgendarCitaTest {
         sesionesPendientes.add(resumenSesionDTO);
 
         DaoSesion daoSesion = Mockito.mock(DaoSesion.class);
-        Mockito.when(daoSesion.obtenerPendientesPorIdPaciente(Mockito.any())).thenReturn(sesionesPendientes);
+        Mockito.when(daoSesion.listarPendientesPorIdPaciente(Mockito.any())).thenReturn(sesionesPendientes);
 
         ServicioValidarPosibilidadAgendarCita servicioValidarPosibilidadAgendarCita
                 = new ServicioValidarPosibilidadAgendarCita(daoSesion);
@@ -83,7 +83,7 @@ class ServicioValidarPosibilidadAgendarCitaTest {
                 .build();
 
         DaoSesion daoSesion = Mockito.mock(DaoSesion.class);
-        Mockito.when(daoSesion.obtenerPendientesPorIdPaciente(Mockito.any())).thenReturn(sesionesPendientes);
+        Mockito.when(daoSesion.listarPendientesPorIdPaciente(Mockito.any())).thenReturn(sesionesPendientes);
 
         ServicioValidarPosibilidadAgendarCita servicioValidarPosibilidadAgendarCita
                 = new ServicioValidarPosibilidadAgendarCita(daoSesion);

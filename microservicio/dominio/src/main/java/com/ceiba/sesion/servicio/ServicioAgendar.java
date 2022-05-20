@@ -36,7 +36,7 @@ public class ServicioAgendar {
     }
 
     private void validarSesionElMismoDia(Sesion sesion) {
-        List<ResumenSesionDTO> sesionesPendientes = daoSesion.obtenerPendientesPorIdPaciente(sesion.getPaciente().getId());
+        List<ResumenSesionDTO> sesionesPendientes = daoSesion.listarPendientesPorIdPaciente(sesion.getPaciente().getId());
         Optional<ResumenSesionDTO> sesionMismoDia = sesionesPendientes.stream().filter(sesionEvaluar -> sesionEvaluar.getFecha().equals(sesion.getFecha())).findFirst();
         if(sesionMismoDia.isPresent()){
             throw new ExcepcionDuplicidad("No puede agendar dos citas el mismo dia");

@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface DaoSesion {
 
-    List<ResumenSesionDTO> obtenerPendientesPorIdPaciente(Long idPaciente);
+    List<ResumenSesionDTO> listarPendientesPorIdPaciente(Long idPaciente);
 }

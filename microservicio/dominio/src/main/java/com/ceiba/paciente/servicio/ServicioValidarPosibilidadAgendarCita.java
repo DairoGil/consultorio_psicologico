@@ -22,7 +22,7 @@ public class ServicioValidarPosibilidadAgendarCita {
     }
 
     private void validarPosibilidadAgendar(Paciente paciente) {
-        List<ResumenSesionDTO> sesionesPendientes = daoSesion.obtenerPendientesPorIdPaciente(paciente.getId());
+        List<ResumenSesionDTO> sesionesPendientes = daoSesion.listarPendientesPorIdPaciente(paciente.getId());
         if(paciente.esTipoValoracion() && !sesionesPendientes.isEmpty()){
             throw new ExcepcionDuplicidad("El paciente tiene una sesión de valoración pendiente");
         }else if(paciente.esTipoAsesoria() && paciente.getSesionesAsesoria() == 0){

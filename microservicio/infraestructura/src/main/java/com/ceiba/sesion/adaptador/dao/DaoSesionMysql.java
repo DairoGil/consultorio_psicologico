@@ -25,7 +25,7 @@ public class DaoSesionMysql implements DaoSesion {
     }
 
     @Override
-    public List<ResumenSesionDTO> obtenerPendientesPorIdPaciente(Long idPaciente) {
+    public List<ResumenSesionDTO> listarPendientesPorIdPaciente(Long idPaciente) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
         paramSource.addValue("id_paciente", idPaciente);
         paramSource.addValue("estado", EstadoSesion.PENDIENTE.toString());
