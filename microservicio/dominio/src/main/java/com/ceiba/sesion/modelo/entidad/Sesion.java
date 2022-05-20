@@ -89,11 +89,6 @@ public class Sesion {
         return 0;
     }
 
-    public void cumplir(String nota) {
-        this.nota = nota;
-        this.estado = EstadoSesion.CUMPLIDA;
-    }
-
     public void asignarTerapia (Terapia terapia){
         this.terapia = terapia;
     }

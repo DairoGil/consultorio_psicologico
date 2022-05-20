@@ -64,10 +64,21 @@ class SesionTest {
     }
 
     @Test
-    void agendarSesionEnFinDeSemanaDeberiaLanzarError() {
+    void agendarSesionEnSabadoDeberiaLanzarError() {
         BasePrueba.assertThrows(() -> new SesionTestDataBuilder()
                         .conPaciente(new PacienteTestDataBuilder().conPacientePorDefecto().build())
                         .conFecha(LocalDate.of(2022, 05, 21))
+                        .conHora(8)
+                        .crear(),
+                ExcepcionValorInvalido.class,
+                "No se presta servicio los fines de semana");
+    }
+
+    @Test
+    void agendarSesionEnDomingoDeberiaLanzarError() {
+        BasePrueba.assertThrows(() -> new SesionTestDataBuilder()
+                        .conPaciente(new PacienteTestDataBuilder().conPacientePorDefecto().build())
+                        .conFecha(LocalDate.of(2022, 05, 22))
                         .conHora(8)
                         .crear(),
                 ExcepcionValorInvalido.class,

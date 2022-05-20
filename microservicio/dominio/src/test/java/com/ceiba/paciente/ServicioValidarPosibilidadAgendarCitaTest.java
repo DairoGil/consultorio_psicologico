@@ -4,9 +4,10 @@ import com.ceiba.BasePrueba;
 import com.ceiba.dominio.excepcion.ExcepcionDuplicidad;
 import com.ceiba.dominio.excepcion.ExcepcionValorObligatorio;
 import com.ceiba.paciente.entidad.Paciente;
+import com.ceiba.paciente.entidad.TipoPaciente;
 import com.ceiba.paciente.servicio.ServicioValidarPosibilidadAgendarCita;
+import com.ceiba.sesion.ResumenSesionDTOTestDataBuilder;
 import com.ceiba.sesion.modelo.dto.ResumenSesionDTO;
-import com.ceiba.sesion.modelo.entidad.Sesion;
 import com.ceiba.sesion.puerto.dao.DaoSesion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,15 +57,39 @@ class ServicioValidarPosibilidadAgendarCitaTest {
     }
 
     @Test
-    void agendarCitaPacienteValoracionConCitaPendienteDeberiaLanzarError(){
+    void agendarSesionPacienteValoracionConSesionPendienteDeberiaLanzarError(){
+        ResumenSesionDTO resumenSesionDTO =
+                new ResumenSesionDTOTestDataBuilder()
+                        .conResumenSesionPorDefecto()
+                        .reconstruir();
+        sesionesPendientes.add(resumenSesionDTO);
 
         DaoSesion daoSesion = Mockito.mock(DaoSesion.class);
+        Mockito.when(daoSesion.obtenerPendientesPorIdPaciente(Mockito.any())).thenReturn(sesionesPendientes);
 
         ServicioValidarPosibilidadAgendarCita servicioValidarPosibilidadAgendarCita
                 = new ServicioValidarPosibilidadAgendarCita(daoSesion);
 
-        BasePrueba.assertThrows(()->servicioValidarPosibilidadAgendarCita.ejecutar(null),
-                ExcepcionValorObligatorio.class,
-                "No se encuentra el paciente");
+        BasePrueba.assertThrows(()->servicioValidarPosibilidadAgendarCita.ejecutar(paciente),
+                ExcepcionDuplicidad.class,
+                "El paciente tiene una sesión de valoración pendiente");
+    }
+
+    @Test
+    void agendarSesionPacienteAsesoriaSinSesionesAsesoriaDeberiaLanzarError(){
+        paciente = new PacienteTestDataBuilder()
+                .conPacientePorDefecto()
+                .conTipoPaciente(TipoPaciente.ASESORIA)
+                .build();
+
+        DaoSesion daoSesion = Mockito.mock(DaoSesion.class);
+        Mockito.when(daoSesion.obtenerPendientesPorIdPaciente(Mockito.any())).thenReturn(sesionesPendientes);
+
+        ServicioValidarPosibilidadAgendarCita servicioValidarPosibilidadAgendarCita
+                = new ServicioValidarPosibilidadAgendarCita(daoSesion);
+
+        BasePrueba.assertThrows(()->servicioValidarPosibilidadAgendarCita.ejecutar(paciente),
+                ExcepcionDuplicidad.class,
+                "El paciente alcanzó el máximo de sesiones permitidas por asesoría");
     }
 }

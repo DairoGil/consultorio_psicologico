@@ -164,7 +164,7 @@ class PacienteTest {
                 .conTipoPaciente(TipoPaciente.ASESORIA)
                 .build();
 
-        BasePrueba.assertThrows(()->paciente.asesorar(),
+        BasePrueba.assertThrows(()->paciente.asignarTerapia(),
                 ExcepcionValorInvalido.class,
                 "El paciente ya tiene activa una asesoria o terapia");
     }
