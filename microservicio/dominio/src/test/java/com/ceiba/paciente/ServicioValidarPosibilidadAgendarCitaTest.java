@@ -25,7 +25,7 @@ class ServicioValidarPosibilidadAgendarCitaTest {
     void setUp() {
         paciente = new PacienteTestDataBuilder()
                 .conPacientePorDefecto()
-                .build();
+                .reconstruir();
 
         sesionesPendientes = new ArrayList<>();
     }
@@ -80,7 +80,7 @@ class ServicioValidarPosibilidadAgendarCitaTest {
         paciente = new PacienteTestDataBuilder()
                 .conPacientePorDefecto()
                 .conTipoPaciente(TipoPaciente.ASESORIA)
-                .build();
+                .reconstruir();
 
         DaoSesion daoSesion = Mockito.mock(DaoSesion.class);
         Mockito.when(daoSesion.listarPendientesPorIdPaciente(Mockito.any())).thenReturn(sesionesPendientes);

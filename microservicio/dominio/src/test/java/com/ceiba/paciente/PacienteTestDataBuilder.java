@@ -57,11 +57,11 @@ public class PacienteTestDataBuilder {
     }
 
     public Paciente build() {
-        return new Paciente(id, nombre, fechaNacimiento,telefono, sesionesAsesoria, tipoPaciente);
+        return new Paciente(id, nombre, fechaNacimiento,telefono);
     }
 
     public Paciente crear() {
-        Paciente paciente = new Paciente(id, nombre, fechaNacimiento,telefono, sesionesAsesoria, tipoPaciente);
+        Paciente paciente = new Paciente(id, nombre, fechaNacimiento,telefono);
         paciente.crear();
         return paciente;
     }

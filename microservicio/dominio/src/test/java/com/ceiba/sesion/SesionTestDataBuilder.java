@@ -22,7 +22,7 @@ public class SesionTestDataBuilder {
 
     public SesionTestDataBuilder conSesionPorDefecto() {
         this.id = 2l;
-        this.paciente = new PacienteTestDataBuilder().conPacientePorDefecto().build();
+        this.paciente = new PacienteTestDataBuilder().conPacientePorDefecto().reconstruir();
         this.fecha = Sesion.sumarDias(3);
         this.hora = 8;
         this.estado = EstadoSesion.PENDIENTE;
@@ -70,6 +70,10 @@ public class SesionTestDataBuilder {
     public SesionTestDataBuilder conTerapia(String terapia){
         this.nota = nota;
         return this;
+    }
+
+    public Sesion build(){
+        return new Sesion(paciente, fecha, hora);
     }
 
     public Sesion crear() {

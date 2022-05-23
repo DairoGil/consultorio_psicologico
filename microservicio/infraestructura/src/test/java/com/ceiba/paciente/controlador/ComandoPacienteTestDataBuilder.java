@@ -23,6 +23,6 @@ public class ComandoPacienteTestDataBuilder {
     }
 
     public ComandoPaciente build(){
-        return new ComandoPaciente(this.id, this.nombre, this.fechaNacimiento, this.telefono, this.sesionesAsesoria, this.tipoPaciente);
+        return new ComandoPaciente(this.id, this.nombre, this.fechaNacimiento, this.telefono);
     }
 }

@@ -15,7 +15,7 @@ public class TerapiaTestDataBuilder {
 
     public TerapiaTestDataBuilder conTerapiaPorDefecto() {
         this.id = 2l;
-        this.paciente = new PacienteTestDataBuilder().conPacientePorDefecto().build();
+        this.paciente = new PacienteTestDataBuilder().conPacientePorDefecto().reconstruir();
         this.resumen = "Razones por las que el paciente ha acudido a la consulta.";
         this.periodicidadMes = 3;
         this.estadoTerapia = EstadoTerapia.ACTIVA;

@@ -31,6 +31,17 @@ public class Paciente {
         this.tipoPaciente = tipoPaciente;
     }
 
+    public Paciente(Long id, String nombre, LocalDate fechaNacimiento, String telefono) {
+        validarObligatorio(id, "Se requiere la identificación del paciente");
+        validarObligatorio(nombre, "Se requiere el nombre del paciente");
+        validarObligatorio(fechaNacimiento, "Se requiere la fecha de nacimiento del paciente");
+
+        this.id = id;
+        this.nombre = nombre;
+        this.fechaNacimiento = fechaNacimiento;
+        this.telefono = telefono;
+    }
+
     public boolean esTipoValoracion() {
         return this.tipoPaciente.equals(TipoPaciente.VALORACION);
     }

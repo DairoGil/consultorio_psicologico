@@ -4,18 +4,23 @@ import com.ceiba.BasePrueba;
 import com.ceiba.dominio.excepcion.ExcepcionDuplicidad;
 import com.ceiba.dominio.excepcion.ExcepcionValorObligatorio;
 import com.ceiba.paciente.entidad.Paciente;
+import com.ceiba.paciente.entidad.TipoPaciente;
 import com.ceiba.paciente.puerto.RepositorioPaciente;
 import com.ceiba.paciente.servicio.ServicioRegistrar;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.time.LocalDate;
+
 class ServicioRegistrarTest {
 
     @Test
     void deberiaRegistrarPaciente(){
         Paciente paciente = new PacienteTestDataBuilder()
-                .conPacientePorDefecto()
+                .conId(1236l)
+                .conNombre("Paciente 1")
+                .conFechaNacimiento(LocalDate.of(1996,7,23))
                 .build();
 
         RepositorioPaciente repositorioPaciente =
@@ -30,6 +35,8 @@ class ServicioRegistrarTest {
         Mockito.verify(repositorioPaciente, Mockito.times(1))
                         .guardar(paciente);
         Assertions.assertEquals(1l, idPacienteCreado);
+        Assertions.assertEquals(TipoPaciente.VALORACION, paciente.getTipoPaciente());
+        Assertions.assertEquals(0, paciente.getSesionesAsesoria());
     }
 
     @Test
@@ -48,5 +55,17 @@ class ServicioRegistrarTest {
         BasePrueba.assertThrows(()->servicioRegistrar.ejecutar(paciente),
                 ExcepcionDuplicidad.class,
                 "El paciente ya existe en el sistema");
+    }
+
+    @Test
+    void pacienteNuloDeberiaLanzarError(){
+        RepositorioPaciente repositorioPaciente =
+                Mockito.mock(RepositorioPaciente.class);
+
+        ServicioRegistrar servicioRegistrar = new ServicioRegistrar(repositorioPaciente);
+
+        BasePrueba.assertThrows(()->servicioRegistrar.ejecutar(null),
+                ExcepcionValorObligatorio.class,
+                "Se requiere paciente para registrar");
     }
 }

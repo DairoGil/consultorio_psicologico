@@ -17,7 +17,7 @@ class ServicioAsesorarTest {
     void deberiaAsesorarPacienteTipoValoracionSinSesionesAsesoria() {
         Paciente paciente = new PacienteTestDataBuilder()
                 .conPacientePorDefecto()
-                .build();
+                .reconstruir();
         RepositorioPaciente repositorioPaciente =
                 Mockito.mock(RepositorioPaciente.class);
 
@@ -46,7 +46,7 @@ class ServicioAsesorarTest {
         Paciente paciente = new PacienteTestDataBuilder()
                 .conPacientePorDefecto()
                 .conTipoPaciente(TipoPaciente.TERAPIA)
-                .build();
+                .reconstruir();
 
         RepositorioPaciente repositorioPaciente =
                 Mockito.mock(RepositorioPaciente.class);
@@ -63,7 +63,7 @@ class ServicioAsesorarTest {
         Paciente paciente = new PacienteTestDataBuilder()
                 .conPacientePorDefecto()
                 .conSesionesAsesoria(1)
-                .build();
+                .reconstruir();
 
         RepositorioPaciente repositorioPaciente =
                 Mockito.mock(RepositorioPaciente.class);

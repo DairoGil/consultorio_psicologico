@@ -77,6 +77,36 @@ class PacienteTest {
     }
 
     @Test
+    void reconstruirPacienteSinIdDeberiaLanzarError(){
+        BasePrueba.assertThrows(()->new PacienteTestDataBuilder()
+                        .conTipoPaciente(TipoPaciente.VALORACION)
+                        .reconstruir(),
+                ExcepcionValorObligatorio.class,
+                "Se requiere la identificación del paciente");
+    }
+
+    @Test
+    void reconstruirPacienteSinNombreDeberiaLanzarError(){
+        BasePrueba.assertThrows(()->new PacienteTestDataBuilder()
+                        .conTipoPaciente(TipoPaciente.VALORACION)
+                        .conId(104l)
+                        .reconstruir(),
+                ExcepcionValorObligatorio.class,
+                "Se requiere el nombre del paciente");
+    }
+
+    @Test
+    void reconstruirPacienteSinFechaNacimientoDeberiaLanzarError(){
+        BasePrueba.assertThrows(()->new PacienteTestDataBuilder()
+                        .conTipoPaciente(TipoPaciente.VALORACION)
+                        .conId(104l)
+                        .conNombre("Paciente prueba")
+                        .reconstruir(),
+                ExcepcionValorObligatorio.class,
+                "Se requiere la fecha de nacimiento del paciente");
+    }
+
+    @Test
     void deberiaResponderEsPacienteValoracionCorrectamente(){
         Paciente paciente = new PacienteTestDataBuilder()
                         .conId(1l)
@@ -95,7 +125,7 @@ class PacienteTest {
                 .conNombre("Paciente 1")
                 .conFechaNacimiento(LocalDate.of(1996,7,23))
                 .conTipoPaciente(TipoPaciente.ASESORIA)
-                .build();
+                .reconstruir();
         Assertions.assertTrue(paciente.esTipoAsesoria());
         Assertions.assertFalse(paciente.esTipoValoracion());
         Assertions.assertFalse(paciente.esTipoTerapia());
@@ -108,7 +138,7 @@ class PacienteTest {
                 .conNombre("Paciente 1")
                 .conFechaNacimiento(LocalDate.of(1996,7,23))
                 .conTipoPaciente(TipoPaciente.TERAPIA)
-                .build();
+                .reconstruir();
         Assertions.assertTrue(paciente.esTipoTerapia());
         Assertions.assertFalse(paciente.esTipoValoracion());
         Assertions.assertFalse(paciente.esTipoAsesoria());
@@ -118,7 +148,7 @@ class PacienteTest {
     void asesorarPacienteValoracionDeberiaQuedarActualizado(){
         Paciente paciente = new PacienteTestDataBuilder()
                 .conPacientePorDefecto()
-                .build();
+                .reconstruir();
         paciente.asesorar();
         Assertions.assertEquals(TipoPaciente.ASESORIA, paciente.getTipoPaciente());
         Assertions.assertEquals(3, paciente.getSesionesAsesoria());
@@ -129,7 +159,7 @@ class PacienteTest {
         Paciente paciente = new PacienteTestDataBuilder()
                 .conPacientePorDefecto()
                 .conTipoPaciente(TipoPaciente.TERAPIA)
-                .build();
+                .reconstruir();
 
         BasePrueba.assertThrows(()->paciente.asesorar(),
                 ExcepcionValorInvalido.class,
@@ -141,7 +171,7 @@ class PacienteTest {
         Paciente paciente = new PacienteTestDataBuilder()
                 .conPacientePorDefecto()
                 .conSesionesAsesoria(1)
-                .build();
+                .reconstruir();
 
         BasePrueba.assertThrows(()->paciente.asesorar(),
                 ExcepcionValorInvalido.class,
@@ -152,7 +182,7 @@ class PacienteTest {
     void asignarTerapiaAPacienteValoracionDeberiaQuedarActualizado(){
         Paciente paciente = new PacienteTestDataBuilder()
                 .conPacientePorDefecto()
-                .build();
+                .crear();
         paciente.asignarTerapia();
         Assertions.assertEquals(TipoPaciente.TERAPIA, paciente.getTipoPaciente());
     }
@@ -162,7 +192,7 @@ class PacienteTest {
         Paciente paciente = new PacienteTestDataBuilder()
                 .conPacientePorDefecto()
                 .conTipoPaciente(TipoPaciente.ASESORIA)
-                .build();
+                .reconstruir();
 
         BasePrueba.assertThrows(()->paciente.asignarTerapia(),
                 ExcepcionValorInvalido.class,
@@ -174,7 +204,7 @@ class PacienteTest {
         Paciente paciente = new PacienteTestDataBuilder()
                 .conPacientePorDefecto()
                 .conSesionesAsesoria(1)
-                .build();
+                .reconstruir();
 
         BasePrueba.assertThrows(()->paciente.asignarTerapia(),
                 ExcepcionValorInvalido.class,

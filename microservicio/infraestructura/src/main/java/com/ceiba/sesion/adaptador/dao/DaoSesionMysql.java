@@ -1,6 +1,7 @@
 package com.ceiba.sesion.adaptador.dao;
 
 import com.ceiba.infraestructura.jdbc.CustomNamedParameterJdbcTemplate;
+import com.ceiba.infraestructura.jdbc.EjecucionBaseDeDatos;
 import com.ceiba.infraestructura.jdbc.sqlstatement.SqlStatement;
 import com.ceiba.sesion.modelo.dto.ResumenSesionDTO;
 import com.ceiba.sesion.modelo.entidad.EstadoSesion;
@@ -19,6 +20,10 @@ public class DaoSesionMysql implements DaoSesion {
     @SqlStatement(namespace = "sesion", value = "obtenerpendientesporidpaciente")
     private static String sqlObtenerPendientesPorIdPaciente;
 
+    @SqlStatement(namespace = "sesion", value = "obtener")
+    private static String sqlObtener;
+
+
     public DaoSesionMysql(CustomNamedParameterJdbcTemplate customNamedParameterJdbcTemplate, MapeoSesionResumen mapeoSesionResumen) {
         this.customNamedParameterJdbcTemplate = customNamedParameterJdbcTemplate;
         this.mapeoSesionResumen = mapeoSesionResumen;
@@ -31,5 +36,14 @@ public class DaoSesionMysql implements DaoSesion {
         paramSource.addValue("estado", EstadoSesion.PENDIENTE.toString());
         return this.customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate()
                         .query(sqlObtenerPendientesPorIdPaciente, paramSource, mapeoSesionResumen);
+    }
+
+    @Override
+    public ResumenSesionDTO obtener(Long idSesion) {
+        MapSqlParameterSource paramSource = new MapSqlParameterSource();
+        paramSource.addValue("id", idSesion);
+        return EjecucionBaseDeDatos.obtenerUnObjetoONull(() -> this.customNamedParameterJdbcTemplate
+                .getNamedParameterJdbcTemplate()
+                .queryForObject(sqlObtener, paramSource, mapeoSesionResumen));
     }
 }

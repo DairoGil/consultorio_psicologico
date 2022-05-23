@@ -6,6 +6,7 @@ import com.ceiba.paciente.PacienteTestDataBuilder;
 import com.ceiba.paciente.entidad.TipoPaciente;
 import com.ceiba.paciente.servicio.ServicioValidarPosibilidadAgendarCita;
 import com.ceiba.sesion.modelo.dto.ResumenSesionDTO;
+import com.ceiba.sesion.modelo.entidad.EstadoSesion;
 import com.ceiba.sesion.modelo.entidad.Sesion;
 import com.ceiba.sesion.puerto.dao.DaoSesion;
 import com.ceiba.sesion.puerto.repositorio.RepositorioSesion;
@@ -47,6 +48,8 @@ class ServicioAgendarTest {
         Mockito.verify(repositorioSesion, Mockito.times(1))
                 .guardar(sesion);
         Assertions.assertEquals(2l, idSesionCreada);
+        Assertions.assertEquals(EstadoSesion.PENDIENTE, sesion.getEstado());
+        Assertions.assertEquals(80000, sesion.getValor());
     }
 
     @Test
@@ -56,7 +59,7 @@ class ServicioAgendarTest {
                         .conPacientePorDefecto()
                         .conTipoPaciente(TipoPaciente.ASESORIA)
                         .conSesionesAsesoria(3)
-                        .build())
+                        .reconstruir())
                 .conFecha(Sesion.sumarDias(3))
                 .conHora(8)
                 .crear();
@@ -81,6 +84,35 @@ class ServicioAgendarTest {
         BasePrueba.assertThrows(()->servicioAgendar.ejecutar(sesion),
                 ExcepcionDuplicidad.class,
                 "No puede agendar dos citas el mismo dia");
+    }
+
+    @Test
+    void pacienteSinPosibilidadDeAgendarDeberiaLanzarError() {
+        Sesion sesion = new SesionTestDataBuilder().conSesionPorDefecto().crear();
+        List<ResumenSesionDTO> sesionesPendientes = new ArrayList<>();
+        ResumenSesionDTO resumenSesionDTO =
+                new ResumenSesionDTOTestDataBuilder()
+                        .conResumenSesionPorDefecto()
+                        .reconstruir();
+        sesionesPendientes.add(resumenSesionDTO);
+
+        RepositorioSesion repositorioSesion =
+                Mockito.mock(RepositorioSesion.class);
+
+        DaoSesion daoSesion = Mockito.mock(DaoSesion.class);
+        Mockito.when(daoSesion.listarPendientesPorIdPaciente(Mockito.any())).thenReturn(sesionesPendientes);
+
+        RepositorioTerapia repositorioTerapia =
+                Mockito.mock(RepositorioTerapia.class);
+
+        ServicioValidarPosibilidadAgendarCita servicioValidarPosibilidadAgendarCita =
+                new ServicioValidarPosibilidadAgendarCita(daoSesion);
+
+        ServicioAgendar servicioAgendar = new ServicioAgendar(repositorioSesion, daoSesion, repositorioTerapia, servicioValidarPosibilidadAgendarCita);
+
+        BasePrueba.assertThrows(()->servicioAgendar.ejecutar(sesion),
+                ExcepcionDuplicidad.class,
+                "El paciente tiene una sesión de valoración pendiente");
     }
 
     @Test
@@ -111,5 +143,34 @@ class ServicioAgendarTest {
                 .guardar(sesion);
         Assertions.assertEquals(2l, idSesionCreada);
         Assertions.assertEquals(terapia, sesion.getTerapia());
+    }
+
+    @Test
+    void validarFuncionalidadMetodoAgendar() {
+        Sesion sesion = new SesionTestDataBuilder()
+                .conPaciente(new PacienteTestDataBuilder().conPacientePorDefecto().reconstruir())
+                .conFecha(Sesion.sumarDias(3))
+                .conHora(8)
+                .build();
+        List<ResumenSesionDTO> sesionesPendientes = new ArrayList<>();
+
+        RepositorioSesion repositorioSesion =
+                Mockito.mock(RepositorioSesion.class);
+
+        DaoSesion daoSesion = Mockito.mock(DaoSesion.class);
+        Mockito.when(daoSesion.listarPendientesPorIdPaciente(Mockito.any())).thenReturn(sesionesPendientes);
+
+        RepositorioTerapia repositorioTerapia =
+                Mockito.mock(RepositorioTerapia.class);
+
+        ServicioValidarPosibilidadAgendarCita servicioValidarPosibilidadAgendarCita =
+                new ServicioValidarPosibilidadAgendarCita(daoSesion);
+
+        ServicioAgendar servicioAgendar = new ServicioAgendar(repositorioSesion, daoSesion, repositorioTerapia, servicioValidarPosibilidadAgendarCita);
+
+        servicioAgendar.ejecutar(sesion);
+
+        Assertions.assertEquals(EstadoSesion.PENDIENTE, sesion.getEstado());
+        Assertions.assertEquals(80000, sesion.getValor());
     }
 }

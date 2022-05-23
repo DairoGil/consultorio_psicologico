@@ -1,6 +1,5 @@
 package com.ceiba.paciente.comando;
 
-import com.ceiba.paciente.entidad.TipoPaciente;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +17,4 @@ public class ComandoPaciente {
     private String nombre;
     private LocalDate fechaNacimiento;
     private String telefono;
-    private Integer sesionesAsesoria;
-    private TipoPaciente tipoPaciente;
 }

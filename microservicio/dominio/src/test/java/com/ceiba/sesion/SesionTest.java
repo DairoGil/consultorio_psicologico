@@ -64,6 +64,43 @@ class SesionTest {
     }
 
     @Test
+    void reconstruirSesionSinIdDeberiaLanzarError() {
+        BasePrueba.assertThrows(() -> new SesionTestDataBuilder().reconstruir(),
+                ExcepcionValorObligatorio.class,
+                "Se requiere el id de la sesion");
+    }
+
+    @Test
+    void reconstruirSesionSinFechaDeberiaLanzarError() {
+        BasePrueba.assertThrows(() -> new SesionTestDataBuilder()
+                        .conId(3l)
+                        .reconstruir(),
+                ExcepcionValorObligatorio.class,
+                "Se requiere la fecha de la sesion");
+    }
+
+    @Test
+    void reconstruirSesionSinHoraDeberiaLanzarError() {
+        BasePrueba.assertThrows(() -> new SesionTestDataBuilder()
+                        .conId(3l)
+                        .conFecha(Sesion.sumarDias(3))
+                        .reconstruir(),
+                ExcepcionValorObligatorio.class,
+                "Se requiere la hora de la sesion");
+    }
+
+    @Test
+    void reconstruirSesionSinEstadoDeberiaLanzarError() {
+        BasePrueba.assertThrows(() -> new SesionTestDataBuilder()
+                        .conId(3l)
+                        .conFecha(Sesion.sumarDias(3))
+                        .conHora(8)
+                        .reconstruir(),
+                ExcepcionValorObligatorio.class,
+                "Se requiere el estado de la sesion");
+    }
+
+    @Test
     void agendarSesionEnSabadoDeberiaLanzarError() {
         BasePrueba.assertThrows(() -> new SesionTestDataBuilder()
                         .conPaciente(new PacienteTestDataBuilder().conPacientePorDefecto().build())
@@ -113,7 +150,7 @@ class SesionTest {
                 .conPaciente(new PacienteTestDataBuilder()
                         .conPacientePorDefecto()
                         .conTipoPaciente(TipoPaciente.ASESORIA)
-                        .build())
+                        .reconstruir())
                 .conFecha(Sesion.sumarDias(3))
                 .conHora(8)
                 .crear();
@@ -127,7 +164,7 @@ class SesionTest {
                 .conPaciente(new PacienteTestDataBuilder()
                         .conPacientePorDefecto()
                         .conTipoPaciente(TipoPaciente.TERAPIA)
-                        .build())
+                        .reconstruir())
                 .conFecha(Sesion.sumarDias(3))
                 .conHora(8)
                 .crear();

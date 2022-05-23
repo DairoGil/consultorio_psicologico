@@ -18,7 +18,7 @@ class ServicioAsignarTerapiaTest {
     void deberiaAsignarTerapiaPacienteTipoValoracion() {
         Paciente paciente = new PacienteTestDataBuilder()
                 .conPacientePorDefecto()
-                .build();
+                .reconstruir();
         RepositorioPaciente repositorioPaciente =
                 Mockito.mock(RepositorioPaciente.class);
 
@@ -35,9 +35,9 @@ class ServicioAsignarTerapiaTest {
         RepositorioPaciente repositorioPaciente =
                 Mockito.mock(RepositorioPaciente.class);
 
-        ServicioAsesorar servicioAsesorar = new ServicioAsesorar(repositorioPaciente);
+        ServicioAsignarTerapia servicioAsignarTerapia = new ServicioAsignarTerapia(repositorioPaciente);
 
-        BasePrueba.assertThrows(()-> servicioAsesorar.ejecutar(null),
+        BasePrueba.assertThrows(()-> servicioAsignarTerapia.ejecutar(null),
                 ExcepcionValorObligatorio.class,
                 "No se encuentra el paciente");
     }
@@ -47,14 +47,14 @@ class ServicioAsignarTerapiaTest {
         Paciente paciente = new PacienteTestDataBuilder()
                 .conPacientePorDefecto()
                 .conTipoPaciente(TipoPaciente.ASESORIA)
-                .build();
+                .reconstruir();
 
         RepositorioPaciente repositorioPaciente =
                 Mockito.mock(RepositorioPaciente.class);
 
-        ServicioAsesorar servicioAsesorar = new ServicioAsesorar(repositorioPaciente);
+        ServicioAsignarTerapia servicioAsignarTerapia = new ServicioAsignarTerapia(repositorioPaciente);
 
-        BasePrueba.assertThrows(()-> servicioAsesorar.ejecutar(paciente),
+        BasePrueba.assertThrows(()-> servicioAsignarTerapia.ejecutar(paciente),
                 ExcepcionValorInvalido.class,
                 "El paciente ya tiene activa una asesoria o terapia");
     }

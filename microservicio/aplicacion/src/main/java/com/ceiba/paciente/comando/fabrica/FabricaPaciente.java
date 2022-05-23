@@ -11,9 +11,7 @@ public class FabricaPaciente {
         return new Paciente(comandoPaciente.getIdPaciente(),
                 comandoPaciente.getNombre(),
                 comandoPaciente.getFechaNacimiento(),
-                comandoPaciente.getTelefono(),
-                comandoPaciente.getSesionesAsesoria(),
-                comandoPaciente.getTipoPaciente()
+                comandoPaciente.getTelefono()
         );
     }
 }
