@@ -87,6 +87,39 @@ class ServicioAgendarTest {
     }
 
     @Test
+    void agendarSesionEnMismoHorarioDeOtraSesionDeberiaLanzarError() {
+        Sesion sesion = new SesionTestDataBuilder()
+                .conPaciente(new PacienteTestDataBuilder()
+                        .conPacientePorDefecto()
+                        .conTipoPaciente(TipoPaciente.ASESORIA)
+                        .conSesionesAsesoria(3)
+                        .reconstruir())
+                .conFecha(Sesion.sumarDias(3))
+                .conHora(8)
+                .crear();
+        List<ResumenSesionDTO> sesionesPendientes = new ArrayList<>();
+        sesionesPendientes.add(new ResumenSesionDTOTestDataBuilder().conResumenSesionPorDefecto().reconstruir());
+
+        RepositorioSesion repositorioSesion =
+                Mockito.mock(RepositorioSesion.class);
+
+        DaoSesion daoSesion = Mockito.mock(DaoSesion.class);
+        Mockito.when(daoSesion.listarPendientes(Mockito.any())).thenReturn(sesionesPendientes);
+
+        RepositorioTerapia repositorioTerapia =
+                Mockito.mock(RepositorioTerapia.class);
+
+        ServicioValidarPosibilidadAgendarCita servicioValidarPosibilidadAgendarCita =
+                new ServicioValidarPosibilidadAgendarCita(daoSesion);
+
+        ServicioAgendar servicioAgendar = new ServicioAgendar(repositorioSesion, daoSesion, repositorioTerapia, servicioValidarPosibilidadAgendarCita);
+
+        BasePrueba.assertThrows(()->servicioAgendar.ejecutar(sesion),
+                ExcepcionDuplicidad.class,
+                "Ya hay una sesión agendada en este horario");
+    }
+
+    @Test
     void pacienteSinPosibilidadDeAgendarDeberiaLanzarError() {
         Sesion sesion = new SesionTestDataBuilder().conSesionPorDefecto().crear();
         List<ResumenSesionDTO> sesionesPendientes = new ArrayList<>();

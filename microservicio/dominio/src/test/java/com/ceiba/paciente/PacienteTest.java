@@ -5,6 +5,7 @@ import com.ceiba.dominio.excepcion.ExcepcionValorInvalido;
 import com.ceiba.dominio.excepcion.ExcepcionValorObligatorio;
 import com.ceiba.paciente.entidad.Paciente;
 import com.ceiba.paciente.entidad.TipoPaciente;
+import com.ceiba.sesion.modelo.entidad.Sesion;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -209,5 +210,29 @@ class PacienteTest {
         BasePrueba.assertThrows(()->paciente.asignarTerapia(),
                 ExcepcionValorInvalido.class,
                 "El paciente ya tiene activa una asesoria o terapia");
+    }
+
+    @Test
+    void asignarFechaNacimientoPosteriorFechaActualDeberiaLanzarError(){
+        Paciente paciente = new PacienteTestDataBuilder()
+                .conPacientePorDefecto()
+                .conFechaNacimiento(Sesion.sumarDias(1))
+                .reconstruir();
+
+        BasePrueba.assertThrows(()->paciente.crear(),
+                ExcepcionValorInvalido.class,
+                "Esta fecha de nacimiento no es valida");
+    }
+
+    @Test
+    void asignarFechaNacimientoAnteriorFechaMinimaDeberiaLanzarError(){
+        Paciente paciente = new PacienteTestDataBuilder()
+                .conPacientePorDefecto()
+                .conFechaNacimiento(LocalDate.now().minusYears(131))
+                .reconstruir();
+
+        BasePrueba.assertThrows(()->paciente.crear(),
+                ExcepcionValorInvalido.class,
+                "Esta fecha de nacimiento no es valida");
     }
 }
