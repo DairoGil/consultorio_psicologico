@@ -9,7 +9,7 @@ import static com.ceiba.dominio.ValidadorArgumento.validarObligatorio;
 
 @Getter
 public class Paciente {
-
+    private static LocalDate fechaMinimaNacimiento = LocalDate.now().minusYears(130);
     private Long id;
     private final String nombre;
     private final LocalDate fechaNacimiento;
@@ -55,6 +55,7 @@ public class Paciente {
     }
 
     public void crear(){
+        validarFecha();
         this.tipoPaciente = TipoPaciente.VALORACION;
         this.sesionesAsesoria = 0;
     }
@@ -77,5 +78,11 @@ public class Paciente {
             throw new ExcepcionValorInvalido("El paciente ya tiene activa una asesoria o terapia");
         }
         this.tipoPaciente = TipoPaciente.TERAPIA;
+    }
+
+    private void validarFecha() {
+        if(this.fechaNacimiento.isAfter(LocalDate.now()) || this.fechaNacimiento.isBefore(fechaMinimaNacimiento) ){
+            throw new ExcepcionValorInvalido("Esta fecha de nacimiento no es valida");
+        }
     }
 }

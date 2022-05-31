@@ -30,6 +30,7 @@ public class ServicioAgendar {
     public Long ejecutar(Sesion sesion){
         servicioValidarPosibilidadAgendarCita.ejecutar(sesion.getPaciente());
         validarSesionElMismoDia(sesion);
+        validarSesionEnMismoHorario(sesion);
         sesion.agendar();
         validarTerapiaActiva(sesion);
         return repositorioSesion.guardar(sesion);
@@ -46,6 +47,15 @@ public class ServicioAgendar {
         Terapia terapia = repositorioTerapia.obtenerActivaPorIdPaciente(sesion.getPaciente().getId());
         if( terapia != null) {
             sesion.asignarTerapia(terapia);
+        }
+    }
+
+    private void validarSesionEnMismoHorario(Sesion sesion){
+        List<ResumenSesionDTO> sesionesPendientes = daoSesion.listarPendientes(sesion);
+        Optional<ResumenSesionDTO> sesionMismoHorario = sesionesPendientes.stream().
+                filter(sesionEvaluar -> sesionEvaluar.getFecha().equals(sesion.getFecha()) && sesionEvaluar.getHora().equals(sesion.getHora())).findFirst();
+        if(sesionMismoHorario.isPresent()){
+            throw new ExcepcionDuplicidad("Ya hay una sesión agendada en este horario");
         }
     }
 }

@@ -5,6 +5,7 @@ import com.ceiba.infraestructura.jdbc.EjecucionBaseDeDatos;
 import com.ceiba.infraestructura.jdbc.sqlstatement.SqlStatement;
 import com.ceiba.sesion.modelo.dto.ResumenSesionDTO;
 import com.ceiba.sesion.modelo.entidad.EstadoSesion;
+import com.ceiba.sesion.modelo.entidad.Sesion;
 import com.ceiba.sesion.puerto.dao.DaoSesion;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
@@ -22,6 +23,9 @@ public class DaoSesionMysql implements DaoSesion {
 
     @SqlStatement(namespace = "sesion", value = "obtener")
     private static String sqlObtener;
+
+    @SqlStatement(namespace = "sesion", value = "obtenersesionhorario")
+    private static String sqlObtenerSesionHorario;
 
 
     public DaoSesionMysql(CustomNamedParameterJdbcTemplate customNamedParameterJdbcTemplate, MapeoSesionResumen mapeoSesionResumen) {
@@ -45,5 +49,15 @@ public class DaoSesionMysql implements DaoSesion {
         return EjecucionBaseDeDatos.obtenerUnObjetoONull(() -> this.customNamedParameterJdbcTemplate
                 .getNamedParameterJdbcTemplate()
                 .queryForObject(sqlObtener, paramSource, mapeoSesionResumen));
+    }
+
+    @Override
+    public List<ResumenSesionDTO> listarPendientes(Sesion sesion) {
+        MapSqlParameterSource paramSource = new MapSqlParameterSource();
+        paramSource.addValue("fecha", sesion.getFecha());
+        paramSource.addValue("hora", sesion.getHora());
+        return EjecucionBaseDeDatos.obtenerUnObjetoONull(() -> this.customNamedParameterJdbcTemplate
+                .getNamedParameterJdbcTemplate()
+                .query(sqlObtenerSesionHorario, paramSource, mapeoSesionResumen));
     }
 }

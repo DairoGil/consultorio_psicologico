@@ -43,7 +43,7 @@ class SesionTest {
     void agendarSesionSinPacienteDeberiaLanzarError() {
         BasePrueba.assertThrows(() -> new SesionTestDataBuilder().crear(),
                 ExcepcionValorObligatorio.class,
-                "Se requiere el paciente que asistira a la sesion");
+                "No se encuentra el paciente indicado");
     }
 
     @Test

@@ -27,7 +27,7 @@ public class Sesion {
     private Terapia terapia;
 
     public Sesion(Paciente paciente, LocalDate fecha, Integer hora) {
-        validarObligatorio(paciente, "Se requiere el paciente que asistira a la sesion");
+        validarObligatorio(paciente, "No se encuentra el paciente indicado");
         validarObligatorio(fecha, "Se requiere la fecha de la sesion");
         validarObligatorio(hora, "Se requiere la hora de la sesion");
         validarHorarioAtencion(fecha, hora);

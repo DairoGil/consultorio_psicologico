@@ -22,7 +22,7 @@ public class ConsultaControladorSesion {
         this.manejadorListarSesionesPendientesPorPaciente = manejadorListarSesionesPendientesPorPaciente;
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/pendientes-paciente/{id}")
     @Operation(summary = "Listar", description = "Metodo utilizado para consultar sesiones pendientes de un paciente")
     public List<ResumenSesionDTO> listarSesionesPendientesPorPaciente(@PathVariable("id") Long idPaciente) {
         return this.manejadorListarSesionesPendientesPorPaciente.ejecutar(idPaciente);

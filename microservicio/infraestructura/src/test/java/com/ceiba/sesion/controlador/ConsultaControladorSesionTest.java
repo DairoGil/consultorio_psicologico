@@ -32,7 +32,7 @@ class ConsultaControladorSesionTest {
 
     @Test
     void listarSesionesPendientesPorPaciente() throws Exception {
-        mockMvc.perform(get("/sesion/{id}", 6l)
+        mockMvc.perform(get("/sesion/pendientes-paciente/{id}", 6l)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
